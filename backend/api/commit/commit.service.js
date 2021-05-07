@@ -2,25 +2,17 @@ const DBService = require('../../services/db.service')
 
 
 function query(criteria={}) {
-    console.log('criteria', criteria);
     var userName = criteria.byUserName.length ? ` AND users.fullname = '${criteria.byUserName}'` : '';
-
     var repositoryName = criteria.byRepositoryName.length ? ` AND repository.name = '${criteria.byRepositoryName}'` : '';
-
+    
     var query = `SELECT commit._id, commit.text, commit.committedAt, users.fullname, repository.name
     FROM commit, users, repository
     WHERE commit.byUser = users._id
     AND commit.repositoryId = repository._id${userName}${repositoryName}`;
+
     console.log('query: ', query);
     return DBService.runSQL(query)
 }
-
-// function query(criteria={}) {
-//     var namePart = criteria.name || '';
-//     var query = `SELECT * FROM commit  WHERE commit.name LIKE '%${namePart}%'`;
-
-//     return DBService.runSQL(query)
-// }
 
 async function getById(commitId) {
     var query = `SELECT * FROM commit WHERE commit._id = ${commitId}`;
