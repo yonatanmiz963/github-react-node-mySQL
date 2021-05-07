@@ -9,7 +9,7 @@ import './CommitPage.scss'
 
 export const CommitPage = () => {
   const dispatch = useDispatch()
-  const [filterBy, setFilterBy] = useState({})
+  const [filterBy, setFilterBy] = useState({ byUserName: '', byRepositoryName: '' })
   const [commits, setCommits] = useState([])
   const [filterNames, setFilterNames] = useState({userNames: [], repoNames: []})
   const commitsToShow = useSelector(state => state.commitReducer.commits)
@@ -18,13 +18,10 @@ export const CommitPage = () => {
     const filterNames = commits.reduce((acc, commit) => {
       if (!acc.userNames) acc.userNames = []
       if (!acc.repoNames) acc.repoNames = []
-      
       if (!acc.userNames.includes(commit.fullname)) acc.userNames.push(commit.fullname)
       acc.repoNames.push(commit.name)
-
       return acc
     }, {})
-
     setFilterNames(filterNames)
   }
 
